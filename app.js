@@ -448,15 +448,17 @@
   // ---------- Simulation tick ----------
   function startSim() {
     clearInterval(state.simTickId);
+    let etaSubtick = 0;
     state.simTickId = setInterval(() => {
       let changed = false;
+      etaSubtick += 1;
+      const etaTick = etaSubtick % 3 === 0; // decrement ETA once every 3 ticks (~7.5s)
       state.devices.forEach((d) => {
         if (d.status === "defrosting") {
-          // advance progress a little
-          const bump = Math.random() * 1.6 + 0.2;
-          d.progress = Math.min(100, +(d.progress + bump).toFixed(1));
-          d.etaMinutes = Math.max(0, d.etaMinutes - 1);
-          d.currentTemp = +(d.currentTemp + (Math.random() * 0.12 - 0.04)).toFixed(1);
+          const bump = Math.random() * 0.2 + 0.05; // 0.05–0.25% per tick
+          d.progress = Math.min(100, +(d.progress + bump).toFixed(2));
+          if (etaTick) d.etaMinutes = Math.max(0, d.etaMinutes - 1);
+          d.currentTemp = +(d.currentTemp + (Math.random() * 0.08 - 0.03)).toFixed(1);
           if (d.progress >= 100) {
             d.status = "holdsafe";
             d.progress = 100;
@@ -500,7 +502,7 @@
           renderDevices();
         }
       }
-    }, 1200);
+    }, 2500);
   }
 
   // ---------- Event wiring ----------
