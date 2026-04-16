@@ -1,0 +1,14 @@
+{
+  "name": "ciwe",
+  "version": "0.1.0",
+  "private": true,
+  "description": "CIWE — Mobile mockup for The Theodore 4000 smart thaw device",
+  "scripts": {
+    "start": "npx --yes serve@14 -s . -l ${PORT:-3000}",
+    "dev": "npx --yes serve@14 -s . -l 3000",
+    "build": "echo 'Static site — no build step required.'"
+  },
+  "engines": {
+    "node": ">=18"
+  }
+}

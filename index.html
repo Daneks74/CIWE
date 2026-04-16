@@ -1,0 +1,208 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, viewport-fit=cover, maximum-scale=1"
+    />
+    <meta name="theme-color" content="#0a1f2e" />
+    <meta
+      name="description"
+      content="CIWE — Smart thaw control for The Theodore 4000"
+    />
+    <title>CIWE · Theodore 4000</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="./styles.css" />
+  </head>
+  <body>
+    <div class="phone">
+      <div class="bg-glow bg-glow--a" aria-hidden="true"></div>
+      <div class="bg-glow bg-glow--b" aria-hidden="true"></div>
+
+      <svg class="svg-defs" aria-hidden="true">
+        <defs>
+          <linearGradient id="miniGrad" x1="0" y1="0" x2="1" y2="1">
+            <stop offset="0%" stop-color="#8ef0da" />
+            <stop offset="100%" stop-color="#4ac8ff" />
+          </linearGradient>
+        </defs>
+      </svg>
+
+      <!-- Toast notification -->
+      <div id="toast" class="toast" role="status" aria-live="polite"></div>
+
+      <!-- Dashboard -->
+      <main id="view-dashboard" class="view view--dashboard" data-active="true">
+        <header class="app-header">
+          <div class="app-header__row">
+            <div>
+              <p class="app-header__hello">Good evening, Dane</p>
+              <h1 class="app-header__title">CIWE</h1>
+            </div>
+            <button
+              class="icon-btn"
+              id="btn-toggle-notifications"
+              aria-label="Toggle notifications"
+              title="Toggle notifications"
+            >
+              <svg
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="1.8"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                aria-hidden="true"
+              >
+                <path
+                  d="M6 8a6 6 0 1 1 12 0c0 7 3 7 3 9H3c0-2 3-2 3-9Z"
+                />
+                <path d="M10 21a2 2 0 0 0 4 0" />
+              </svg>
+              <span class="icon-btn__dot" id="notif-dot"></span>
+            </button>
+          </div>
+
+          <div class="summary">
+            <div class="summary__pill">
+              <span class="summary__num" id="summary-active">1</span>
+              <span class="summary__lbl">Thawing</span>
+            </div>
+            <div class="summary__pill">
+              <span class="summary__num" id="summary-ready">1</span>
+              <span class="summary__lbl">Hold Safe</span>
+            </div>
+            <div class="summary__pill">
+              <span class="summary__num" id="summary-idle">1</span>
+              <span class="summary__lbl">Idle</span>
+            </div>
+          </div>
+        </header>
+
+        <section class="devices" id="devices-list" aria-label="Your devices">
+          <!-- Cards injected by JS -->
+        </section>
+
+        <section class="activity" aria-label="Recent activity">
+          <div class="activity__head">
+            <h2 class="section-title">Recent activity</h2>
+            <span class="section-link">View all</span>
+          </div>
+          <ul class="activity__list" id="activity-list"></ul>
+        </section>
+
+        <div class="bottom-nav">
+          <button class="bottom-nav__btn is-active" data-nav="home">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 10.5 12 3l9 7.5V20a1 1 0 0 1-1 1h-5v-6h-6v6H4a1 1 0 0 1-1-1v-9.5Z"/></svg>
+            <span>Home</span>
+          </button>
+          <button class="bottom-nav__btn" data-nav="devices">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="4"/><path d="M3 10h18"/><path d="M9 3v7"/></svg>
+            <span>Devices</span>
+          </button>
+          <button class="bottom-nav__btn" data-nav="activity">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12h3l2-6 4 12 2-6h5"/></svg>
+            <span>Activity</span>
+          </button>
+          <button class="bottom-nav__btn" data-nav="settings">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.7 1.7 0 0 0 .3 1.8l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.7 1.7 0 0 0-1.8-.3 1.7 1.7 0 0 0-1 1.5V21a2 2 0 1 1-4 0v-.1a1.7 1.7 0 0 0-1.1-1.5 1.7 1.7 0 0 0-1.8.3l-.1.1a2 2 0 1 1-2.8-2.8l.1-.1a1.7 1.7 0 0 0 .3-1.8 1.7 1.7 0 0 0-1.5-1H3a2 2 0 1 1 0-4h.1a1.7 1.7 0 0 0 1.5-1.1 1.7 1.7 0 0 0-.3-1.8l-.1-.1a2 2 0 1 1 2.8-2.8l.1.1a1.7 1.7 0 0 0 1.8.3H9a1.7 1.7 0 0 0 1-1.5V3a2 2 0 1 1 4 0v.1a1.7 1.7 0 0 0 1 1.5 1.7 1.7 0 0 0 1.8-.3l.1-.1a2 2 0 1 1 2.8 2.8l-.1.1a1.7 1.7 0 0 0-.3 1.8V9c.3.6.9 1 1.5 1H21a2 2 0 1 1 0 4h-.1a1.7 1.7 0 0 0-1.5 1Z"/></svg>
+            <span>Settings</span>
+          </button>
+        </div>
+      </main>
+
+      <!-- Device Detail -->
+      <main id="view-detail" class="view view--detail" aria-hidden="true">
+        <header class="detail-header">
+          <button class="icon-btn icon-btn--ghost" id="btn-back" aria-label="Back">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 6l-6 6 6 6"/></svg>
+          </button>
+          <div class="detail-header__title">
+            <p class="detail-header__eyebrow" id="detail-model">Theodore 4000</p>
+            <h2 id="detail-name">Thaw Pod</h2>
+          </div>
+          <button class="icon-btn icon-btn--ghost" aria-label="More options">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="5" cy="12" r="1.5"/><circle cx="12" cy="12" r="1.5"/><circle cx="19" cy="12" r="1.5"/></svg>
+          </button>
+        </header>
+
+        <section class="temps">
+          <div class="temp">
+            <span class="temp__lbl">Current</span>
+            <span class="temp__val" id="detail-current">--°</span>
+          </div>
+          <div class="temp temp--right">
+            <span class="temp__lbl">Target</span>
+            <span class="temp__val" id="detail-target">--°</span>
+          </div>
+        </section>
+
+        <section class="ring-wrap" aria-label="Thaw progress">
+          <div class="ring">
+            <svg viewBox="0 0 240 240" class="ring__svg" aria-hidden="true">
+              <defs>
+                <linearGradient id="ringGrad" x1="0" y1="0" x2="1" y2="1">
+                  <stop offset="0%" stop-color="#8EF0DA" />
+                  <stop offset="55%" stop-color="#4AC8FF" />
+                  <stop offset="100%" stop-color="#2A6CF0" />
+                </linearGradient>
+                <filter id="ringGlow" x="-20%" y="-20%" width="140%" height="140%">
+                  <feGaussianBlur stdDeviation="4" result="b" />
+                  <feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge>
+                </filter>
+              </defs>
+              <circle cx="120" cy="120" r="104" class="ring__track" />
+              <circle
+                cx="120" cy="120" r="104"
+                class="ring__progress"
+                id="ring-progress"
+                stroke="url(#ringGrad)"
+                filter="url(#ringGlow)"
+              />
+              <circle cx="120" cy="120" r="104" class="ring__ticks" id="ring-ticks" />
+            </svg>
+            <div class="ring__center">
+              <span class="ring__status" id="ring-status">Thawing</span>
+              <span class="ring__pct" id="ring-pct">42<span class="ring__pct-sym">%</span></span>
+              <span class="ring__eta" id="ring-eta">1h 15m remaining</span>
+            </div>
+          </div>
+        </section>
+
+        <section class="meta">
+          <div class="meta__card">
+            <span class="meta__lbl">Meat type</span>
+            <span class="meta__val" id="detail-meat">Beef Steak</span>
+          </div>
+          <div class="meta__card">
+            <span class="meta__lbl">Weight</span>
+            <span class="meta__val" id="detail-weight">1.3 lb</span>
+          </div>
+          <div class="meta__card">
+            <span class="meta__lbl">Mode</span>
+            <span class="meta__val" id="detail-mode">Precision Thaw</span>
+          </div>
+          <div class="meta__card">
+            <span class="meta__lbl">Signal</span>
+            <span class="meta__val meta__val--ok" id="detail-signal">Online</span>
+          </div>
+        </section>
+
+        <div class="detail-actions">
+          <button class="btn-secondary" id="btn-hold">Hold Safe</button>
+          <button class="btn-primary btn-primary--danger" id="btn-primary-action">
+            Cancel Defrost
+          </button>
+        </div>
+      </main>
+    </div>
+
+    <script src="./app.js"></script>
+  </body>
+</html>
