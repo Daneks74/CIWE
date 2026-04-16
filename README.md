@@ -29,19 +29,26 @@ Open `http://localhost:3000` and resize the browser to a phone viewport
 
 ## Deploy on Render
 
-### Option A — Static Site (recommended)
-- **Build command:** *(leave empty)* or `echo skip`
+### Option A — Static Site (recommended, never sleeps)
+- **Build command:** *(leave empty)*
 - **Publish directory:** `.`
+- **Rewrite rule:** `/* → /index.html (200)` (or keep the committed `_redirects` / `render.yaml`)
 
-That's it — Render serves the three static files directly. Fastest, cheapest.
+A `render.yaml` blueprint is included — connect the repo and Render will
+pick it up automatically. Static Sites on Render do **not** spin down with
+inactivity, so this is what you want for a long-lived demo URL.
 
 ### Option B — Web Service (Node)
-If you'd rather use a web service:
+Only use this if you specifically need a Node runtime.
 - **Environment:** Node
 - **Build command:** `npm install`
 - **Start command:** `npm start`
 
-`npm start` launches `serve` on Render's `$PORT`.
+`serve` is now a real dependency (installed at build time), so cold starts
+don't depend on fetching it from npm. **Note:** Render's free Web Service
+tier spins down after ~15 min of inactivity — the first request after sleep
+may return a brief 502/"Not Found" for 30–60s while it wakes. If you see
+that, either upgrade to a paid instance or switch to Option A.
 
 ## What's in the mockup
 

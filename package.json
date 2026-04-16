@@ -4,9 +4,12 @@
   "private": true,
   "description": "CIWE — Mobile mockup for The Theodore 4000 smart thaw device",
   "scripts": {
-    "start": "npx --yes serve@14 -s . -l ${PORT:-3000}",
-    "dev": "npx --yes serve@14 -s . -l 3000",
+    "start": "serve -s . -l tcp://0.0.0.0:${PORT:-3000}",
+    "dev": "serve -s . -l 3000",
     "build": "echo 'Static site — no build step required.'"
+  },
+  "dependencies": {
+    "serve": "14.2.4"
   },
   "engines": {
     "node": ">=18"
